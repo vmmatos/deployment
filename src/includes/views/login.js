@@ -6,18 +6,56 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert, Dimensions, TouchableHighlight, Navigator } from 'react-native';
 import firebase from 'firebase';
 
+// import SignUp from '../views/signup';
+
 import commonStyle from '../styles/common.css'
 
-const width 		= Dimensions.get('window').width - 40,
-	onButtonPress 	= (route, nav, routes) => { 
-		console.log('Button SIGN UP has been pressed! ' + route.index);
+var width 		= Dimensions.get('window').width - 40;
 
-		if (route.index === 0) { 
-			nav.push(routes[1]); 
-		} else { 
-			nav.pop(); 
-		}
-	};
+var onButtonPress 	= (route, nav, routes) => {
+
+	console.log('Button SIGN UP has been pressed! ' + route.index);
+
+	if (route.index === 0) { 
+		nav.push(routes[1]); 
+		return <SignUp navigator={navigator} />
+	} else { 
+		nav.pop(); 
+		return <SignIn navigator={navigator} />
+	}
+};
+
+var SignUp = React.createClass({
+ /* _handlePress() {
+    this.props.navigator.push({id: 2,});
+  },*/
+
+	render () {
+
+  		return (
+			<View style={commonStyle.container}>
+				<Text>Sign Up?</Text>
+			</View>
+		)
+
+	}
+});
+
+var SignIn = React.createClass({
+ /* _handlePress() {
+    this.props.navigator.push({id: 2,});
+  },*/
+
+	render () {
+
+  		return (
+			<View style={commonStyle.container}>
+				<Text>Sign In?</Text>
+			</View>
+		)
+
+	}
+});
 
 class Login extends Component {
 
@@ -29,11 +67,11 @@ class Login extends Component {
 		];
 
 		return (
-			
+			//http://stackoverflow.com/questions/32918666/example-of-navigation-between-views-in-react-native-android
 			<Navigator 
 				initialRoute={routes[0]} 
 				initialRouteStack={routes}
-				configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromBottom} //effects
+				configureScene={(route, routeStack) => Navigator.SceneConfigs.FadeAndroid} //effects
 				renderScene={(route, navigator) =>
 					<View style={commonStyle.container}>
 						<TouchableHighlight onPress={() => {
