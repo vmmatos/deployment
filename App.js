@@ -1,7 +1,14 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, AppRegistry, Navigator } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  AppRegistry, 
+  Navigator 
+} from 'react-native';
+
 import firebase from 'firebase';
 
 import Firebase from './src/includes/config/firebase/firebase';
