@@ -10,7 +10,9 @@ import {
 	Alert, 
 	Dimensions, 
 	TouchableHighlight, 
-	Navigator 
+	Navigator,
+	TextInput,
+	Button
 } from 'react-native';
 
 import firebase from 'firebase';
@@ -21,6 +23,7 @@ import commonStyle from '../styles/common.css';
 
 const width = Dimensions.get('window').width - 40;
 
+// NOVO REGISTO
 var SignUp = React.createClass({
 
   	_handlePress() {
@@ -35,10 +38,10 @@ var SignUp = React.createClass({
 						this._handlePress();
 						}
 					}
-					style={styles.btn_signUp}
+					style={styles.primaryButton}
 					onHideUnderlay={()=>{this.setState({pressed: false})}}
 					onShowUnderlay={()=>{this.setState({pressed: true})}}>
-					<Text>ENTRAR</Text>
+					<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
 				</TouchableHighlight>
 			</View>
 		)
@@ -46,6 +49,7 @@ var SignUp = React.createClass({
 	}
 });
 
+// ENTRADA
 var SignIn = React.createClass({
 
 	_handlePress() {
@@ -55,22 +59,56 @@ var SignIn = React.createClass({
 	render () {
 
   		return (
-			<View style={[commonStyle.container, styles.alignCenterBtns]}>
-				<TouchableHighlight onPress={() => {
-						this._handlePress();
+
+			<View style={commonStyle.container}>
+
+				<View style={styles.viewForm}>
+
+					<TextInput
+				        style={styles.inputFields}
+				        onChangeText={(text) => this.setState({text})}
+				        placeholder="Email"
+				        placeholderTextColor="#666"
+				        keyboardType="email-address"
+				     />
+
+				     <TextInput
+				        style={styles.inputFields}
+				        onChangeText={(text) => this.setState({text})}
+				        placeholder="Palavra-Chave"
+				        placeholderTextColor="#666"
+				        secureTextEntry={true}
+				     />
+
+					<TouchableHighlight onPress={() => {
+							// this._handlePress();
+							}
 						}
-					}
-					style={styles.btn_signUp}
-					onHideUnderlay={()=>{this.setState({pressed: false})}}
-					onShowUnderlay={()=>{this.setState({pressed: true})}}>
-					<Text>REGISTAR</Text>
-				</TouchableHighlight>
+						style={styles.primaryButton}
+						onHideUnderlay={()=>{this.setState({pressed: false})}}
+						onShowUnderlay={()=>{this.setState({pressed: true})}}>
+						<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
+					</TouchableHighlight>
+
+					<TouchableHighlight onPress={() => {
+							this._handlePress();
+							}
+						}
+						style={styles.primaryButton}
+						onHideUnderlay={()=>{this.setState({pressed: false})}}
+						onShowUnderlay={()=>{this.setState({pressed: true})}}>
+						<Text style={styles.primaryButtonTxt}>NOVO REGISTO</Text>
+					</TouchableHighlight>
+
+				</View>
+
 			</View>
 		)
 
 	}
 });
 
+// MAIN
 class Login extends Component {
 
 	static _renderScene (route, navigator) {
@@ -110,17 +148,32 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around',
 	},
 
-	btn_signUp: {
+	primaryButton: {
 		alignItems: 'center',
-		backgroundColor: 'transparent',
-		borderColor: 'blue',	
+		backgroundColor: '#0dbbee',
+		borderColor: 'transparent',	
    		borderRadius: 10,
    		borderWidth: 1,
    		flexDirection: 'row',
-   		height: 50,
+   		height: 40,
 	    justifyContent: 'center',
-   		overflow: 'hidden',
+	    marginBottom: 8,
    		width: width
+	},
+
+	primaryButtonTxt: {
+   		color: '#fff'
+	},
+
+	viewForm: {
+		marginBottom: 20,
+		width: width
+	},
+
+	inputFields: {
+		height: 50,
+		marginBottom: 8,
+		padding: 5
 	},
 });
 
