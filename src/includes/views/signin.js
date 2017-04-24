@@ -93,6 +93,10 @@ class SignIn extends Component {
 						<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
 					</TouchableHighlight>
 
+					<View style={styles.containerMiddle}>
+						<Text style={styles.middleTxt}>ou</Text>
+					</View>
+
 					<TouchableHighlight onPress={() => {
 							this._handlePress();
 							}
@@ -134,6 +138,18 @@ const styles = StyleSheet.create({
 
 	primaryButtonTxt: {
    		color: '#fff'
+	},
+
+	containerMiddle: {
+		flexDirection: 'row',
+	},
+
+	middleTxt: {
+		flex:1,
+   		fontSize: 16,
+	    marginBottom: 10,
+	    textAlign: 'center',
+	    width: 50
 	},
 
 	viewForm: {

@@ -18,7 +18,7 @@ import {
 
 import firebase from 'firebase';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// <FontAwesome name='trophy' />
+import DatePicker from 'react-native-datepicker'
 
 import commonStyle from '../styles/common.css';
 
@@ -40,12 +40,14 @@ class SignUp extends Component {
 		this.state = {
 			loading: false,
 			email: '',
-			password: ''
+			password: '',
+			name: '',
+			date: ''
 		};
 	}
 
 	_handlePress() {
-    	this.props.navigator.push({index: 1,});
+    	this.props.navigator.pop();
     }
 
     _handleMailChange(evt) {
@@ -66,6 +68,30 @@ class SignUp extends Component {
 
 				<View style={styles.viewForm}>
 
+					<TouchableHighlight onPress={() => {
+							// this._handlePress();
+							}
+						}
+						style={styles.fbButton}
+						onHideUnderlay={()=>{this.setState({pressed: false})}}
+						onShowUnderlay={()=>{this.setState({pressed: true})}}>
+						<Text style={styles.primaryButtonTxt}>REGISTAR COM FACEBOOK</Text>
+					</TouchableHighlight>
+
+					<TouchableHighlight onPress={() => {
+							// this._handlePress();
+							}
+						}
+						style={styles.gpButton}
+						onHideUnderlay={()=>{this.setState({pressed: false})}}
+						onShowUnderlay={()=>{this.setState({pressed: true})}}>
+						<Text style={styles.primaryButtonTxt}>REGISTAR COM O GOOGLE</Text>
+					</TouchableHighlight>
+
+				</View>
+
+				<View style={styles.viewForm}>
+
 					<TextInput
 				    	style={[styles.inputFields, {color: color.currentColor}]}
 				    	onChangeText={this._handleMailChange}
@@ -83,6 +109,38 @@ class SignUp extends Component {
 				    	secureTextEntry={true}
 				    />
 
+				    <TextInput
+				    	style={styles.inputFields}
+				    	onChangeText={(text) => this.setState({text})}
+				    	placeholder="Primeiro e Ultimo Nome"
+				    	placeholderTextColor="#666"
+				    	autoCapitalize='words'
+				    	underlineColorAndroid="transparent"
+				    />
+
+				    <DatePicker
+				        style={[styles.inputFields, styles.inputFieldsDatePicker]}
+				        date={this.state.date}
+				        mode="date"
+				        placeholder="Data de Nascimento"
+				        format="DD-MM-YYYY"
+				        minDate="01-01-1900"
+				        maxDate="31-12-2080"
+				        confirmBtnText="Confirmar"
+				        cancelBtnText="Cancelar"
+				        showIcon={false}
+				        customStyles={{
+				        	dateInput:{
+				        		alignItems: 'flex-start',
+				        		borderColor: 'transparent',
+				        	},
+				        	placeholderText: {
+				        		color: '#666'
+				        	},
+				        }}
+				        onDateChange={(date) => {this.setState({date: date})}}
+				      />
+
 					<TouchableHighlight onPress={() => {
 							// this._handlePress();
 							}
@@ -93,6 +151,10 @@ class SignUp extends Component {
 						<Text style={styles.primaryButtonTxt}>REGISTAR</Text>
 					</TouchableHighlight>
 
+					<View style={styles.containerMiddle}>
+						<Text style={styles.middleTxt}>ou</Text>
+					</View>
+
 					<TouchableHighlight onPress={() => {
 							this._handlePress();
 							}
@@ -100,7 +162,7 @@ class SignUp extends Component {
 						style={styles.primaryButton}
 						onHideUnderlay={()=>{this.setState({pressed: false})}}
 						onShowUnderlay={()=>{this.setState({pressed: true})}}>
-						<Text style={styles.primaryButtonTxt}>ENTRAR_</Text>
+						<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
 					</TouchableHighlight>
 
 				</View>
@@ -132,8 +194,51 @@ const styles = StyleSheet.create({
    		width: width
 	},
 
+	fbButton: {
+		alignItems: 'center',
+		backgroundColor: '#3b5998',
+		borderColor: 'transparent',	
+   		borderRadius: 10,
+   		borderWidth: 1,
+   		flexDirection: 'row',
+   		height: 40,
+	    justifyContent: 'center',
+	    marginBottom: 8,
+   		width: width
+	},
+
+	gpButton: {
+		alignItems: 'center',
+		backgroundColor: '#d34836',
+		borderColor: 'transparent',	
+   		borderRadius: 10,
+   		borderWidth: 1,
+   		flexDirection: 'row',
+   		height: 40,
+	    justifyContent: 'center',
+	    marginBottom: 8,
+   		width: width
+	},
+
 	primaryButtonTxt: {
    		color: '#fff'
+	},
+
+	iconBtn: {
+		fontSize: 18,
+		paddingRight: 10,
+	},
+
+	containerMiddle: {
+		flexDirection: 'row',
+	},
+
+	middleTxt: {
+		flex:1,
+   		fontSize: 16,
+	    marginBottom: 10,
+	    textAlign: 'center',
+	    width: 50
 	},
 
 	viewForm: {
@@ -142,9 +247,15 @@ const styles = StyleSheet.create({
 	},
 
 	inputFields: {
-		height: 50,
+		backgroundColor: '#f1f1f1',
+		height: 45,
 		marginBottom: 8,
-		padding: 5,
+		padding: 5
+	},
+
+	inputFieldsDatePicker: {
+		paddingTop: -2,
+		width: width,
 	},
 });
 
