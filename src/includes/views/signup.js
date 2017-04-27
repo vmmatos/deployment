@@ -13,12 +13,14 @@ import {
 	Navigator,
 	TextInput,
 	Button,
-	Animated
+	Animated,
+	Linking
 } from 'react-native';
 
 import firebase from 'firebase';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+import Toast from 'react-native-simple-toast';
 
 import commonStyle from '../styles/common.css';
 
@@ -51,13 +53,34 @@ class SignUp extends Component {
     }
 
     _handleMailChange(evt) {
-    	alert('mail - ' + evt);
-    	if (evt === 'ola') {
+    	// alert('mail - ' + evt);
+    	/*if (evt === 'ola') {
     		this.setState({color: '#ff0000'});
     		console.log('ola--');
     	} else {
     		console.log('NOT ola!!');
-    	}
+    	}*/
+
+    	Toast.show('si - ' + evt);
+    }
+
+    _onSubmit(evt) {
+
+    	// evt.preventDefault()
+
+    	/*let email 	 = this.state.email,
+    		password = this.state.password,
+    		name 	 = this.state.name,
+    		date 	 = this.state.date;*/
+
+    	const { email, password, name, date } = this.state
+
+    	// this.props.onSubmit(email, password, name, date)
+
+    	Toast.show('form - ' + email + ' - ' + password + ' - ' + name + ' ?? ' + date)
+
+    	// FALTAM VALIDACOES
+
     }
 
 	render () {
@@ -94,7 +117,8 @@ class SignUp extends Component {
 
 					<TextInput
 				    	style={[styles.inputFields, {color: color.currentColor}]}
-				    	onChangeText={this._handleMailChange}
+				    	onChangeText={(email) => this.setState({email})}
+				    	value={this.state.email}
 				    	placeholder="Email"
 				    	placeholderTextColor="#666"
 				    	keyboardType="email-address"
@@ -103,7 +127,8 @@ class SignUp extends Component {
 
 				    <TextInput
 				    	style={styles.inputFields}
-				    	onChangeText={(text) => this.setState({text})}
+				    	onChangeText={(password) => this.setState({password})}
+				    	value={this.state.password}
 				    	placeholder="Palavra-Chave"
 				    	placeholderTextColor="#666"
 				    	secureTextEntry={true}
@@ -111,7 +136,8 @@ class SignUp extends Component {
 
 				    <TextInput
 				    	style={styles.inputFields}
-				    	onChangeText={(text) => this.setState({text})}
+				    	onChangeText={(name) => this.setState({name})}
+				    	value={this.state.name}
 				    	placeholder="Primeiro e Ultimo Nome"
 				    	placeholderTextColor="#666"
 				    	autoCapitalize='words'
@@ -142,7 +168,7 @@ class SignUp extends Component {
 				      />
 
 					<TouchableHighlight onPress={() => {
-							// this._handlePress();
+							this._onSubmit();
 							}
 						}
 						style={styles.primaryButton}
@@ -164,6 +190,11 @@ class SignUp extends Component {
 						onShowUnderlay={()=>{this.setState({pressed: true})}}>
 						<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
 					</TouchableHighlight>
+
+					<Text style={{color: 'blue'}}
+					      onPress={() => Linking.openURL('http://google.com')}>
+					  Google
+					</Text>
 
 				</View>
 
