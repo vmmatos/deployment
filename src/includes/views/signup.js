@@ -20,7 +20,11 @@ import {
 import firebase from 'firebase';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DatePicker from 'react-native-datepicker';
-import Toast from 'react-native-simple-toast';
+import ValidationComponent from 'react-native-form-validator';
+import FireAuth from 'simple-firebase-auth';
+
+import { callToast, callToastLong } from '../common/toast';
+import { encrypt } from '../common/encryption';
 
 import commonStyle from '../styles/common.css';
 
@@ -31,55 +35,159 @@ const width = Dimensions.get('window').width - 40;
 let color = {
 	currentColor: '#00ffff',
 	errorColor: '#ff0000'
-}
+};
 
 // MAIN
-class SignUp extends Component {
+class SignUp extends ValidationComponent {
 
 	constructor(props) {
 		super(props);
 	
 		this.state = {
-			loading: false,
-			email: '',
-			password: '',
-			name: '',
-			date: ''
+			loading  : false,
+			email 	 : '',
+			password : '',
+			name 	 : '',
+			date 	 : '',
+			response : ''
 		};
+
+		// this.signup = this.signup.bind(this);
+	}
+
+	async signup() {
+
+		// console.log('this.email - ' + this.state.email + ' -- ' + encrypt(this.state.password));
+
+		/*try {
+
+			await firebase.auth().createUserWithEmailAndPassword(this.state.email, encrypt(this.state.password));
+
+			this.setStage({
+				response: 'account create'
+			})
+
+		} catch (error) {
+
+			this.setStage({
+				response: 'error'
+			});
+
+			console.log('ERROR - ' + error);
+
+		}*/
+
+		await firebase.auth().createUserWithEmailAndPassword(this.state.email, encrypt(this.state.password))
+		.then(function(user) {
+			console.log('SUCESS - ' + user); // funca
+
+			this.setStage({
+				email 	 : '',
+				password : '',
+				name 	 : '',
+				date 	 : '',
+				response: 'account create'
+			})
+
+		})
+		.catch(function(error) {
+			var errorCode = error.code;
+		 	var errorMessage = error.message;
+
+		 	this.setStage({
+		 		response: 'error'
+			});
+
+			console.log('ERROR - ' + errorMessage);
+		});
+
+	}
+
+	async _signupGP() {
+
+		var provider = new firebase.auth.GoogleAuthProvider();
+		// var providerGP = new firebase.auth.GoogleAuthProvider().credential();
+
+		console.log('pder =>> ', provider)
+
+		/*await firebase.auth().signInWithPopup(provider)
+		.then(function(result) {
+		  // This gives you a Google Access Token. You can use it to access the Google API.
+		  var token = result.credential.accessToken;
+		  // The signed-in user info.
+		  var user = result.user;
+		  // ...
+
+		  console.log('GP SUCESS - ' + token + ' .. ' + user);
+		})
+		.catch(function(error) {
+		  // Handle Errors here.
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  // The email of the user's account used.
+		  var email = error.email;
+		  // The firebase.auth.AuthCredential type that was used.
+		  var credential = error.credential;
+		  // ...
+
+		  console.log('GP ERROR - ' + errorMessage);
+		});*/
+
+	}
+
+	/*register = () => {
+  const { email, password, firstName, lastName } = this.state;
+  FireAuth.register(email, password, { firstName, lastName });
+}*/
+
+	async _signupFB() {
+		var provider = new firebase.auth.FacebookAuthProvider();
+
+		firebase.auth().signInWithPopup(provider).then(function(result) {
+  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+  var token = result.credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  // ...
+  console.log('SUCESSO');
+}).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+  console.log('ERRO - ' + errorMessage);
+});
 	}
 
 	_handlePress() {
     	this.props.navigator.pop();
     }
 
-    _handleMailChange(evt) {
-    	// alert('mail - ' + evt);
-    	/*if (evt === 'ola') {
-    		this.setState({color: '#ff0000'});
-    		console.log('ola--');
-    	} else {
-    		console.log('NOT ola!!');
-    	}*/
+    _onSubmit() {
 
-    	Toast.show('si - ' + evt);
-    }
+    	const { email, password, name, date } = this.state;
 
-    _onSubmit(evt) {
+    	// encrypt(password)
 
-    	// evt.preventDefault()
+		/*this.validate({
+			email: {email: true, required: true},
+			password: {minlength:6, required: true},
+			name: {required: true},
+			date: {required: true, date: 'DD-MM-YYYY'}
+		});
 
-    	/*let email 	 = this.state.email,
-    		password = this.state.password,
-    		name 	 = this.state.name,
-    		date 	 = this.state.date;*/
+		if ( this.errors.length > 0 ) {
+			callToastLong(this.getErrorMessages());
+		} else {*/
 
-    	const { email, password, name, date } = this.state
+			this.signup()
 
-    	// this.props.onSubmit(email, password, name, date)
-
-    	Toast.show('form - ' + email + ' - ' + password + ' - ' + name + ' ?? ' + date)
-
-    	// FALTAM VALIDACOES
+			// encrypar pass e enviar para firebase == falta traduzir frases de erro
+		//}
 
     }
 
@@ -92,7 +200,7 @@ class SignUp extends Component {
 				<View style={styles.viewForm}>
 
 					<TouchableHighlight onPress={() => {
-							// this._handlePress();
+								this._signupFB();
 							}
 						}
 						style={styles.fbButton}
@@ -102,7 +210,7 @@ class SignUp extends Component {
 					</TouchableHighlight>
 
 					<TouchableHighlight onPress={() => {
-							// this._handlePress();
+								this._signupGP();
 							}
 						}
 						style={styles.gpButton}
@@ -115,8 +223,12 @@ class SignUp extends Component {
 
 				<View style={styles.viewForm}>
 
+					<View style={styles.containerMiddle}>
+						<Text style={styles.middleTxt}>Registar-se com um email</Text>
+					</View>
+
 					<TextInput
-				    	style={[styles.inputFields, {color: color.currentColor}]}
+				    	style={styles.inputFields}
 				    	onChangeText={(email) => this.setState({email})}
 				    	value={this.state.email}
 				    	placeholder="Email"
@@ -193,7 +305,7 @@ class SignUp extends Component {
 
 					<Text style={{color: 'blue'}}
 					      onPress={() => Linking.openURL('http://google.com')}>
-					  Google
+					  Ao activar com este serviço concorda com os Termos de Serviço e com a Politica de Privacidade.
 					</Text>
 
 				</View>
@@ -279,6 +391,7 @@ const styles = StyleSheet.create({
 
 	inputFields: {
 		backgroundColor: '#f1f1f1',
+		borderWidth: 1,
 		height: 45,
 		marginBottom: 8,
 		padding: 5

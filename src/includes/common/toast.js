@@ -1,8 +1,8 @@
-/* TOAST class */
+/* TOAST function */
 
 'use strict';
 
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -26,7 +26,7 @@ class Toasts extends Component {
         toValue: 0,
         duration: 350
       }).start(this.closeToast())*/
-  }
+  /*}
   
   closeToast() {
     setTimeout(() => {
@@ -62,4 +62,14 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = Toasts;
+module.exports = Toasts;*/
+
+import Toast from 'react-native-simple-toast';
+
+export function callToast(type) {
+  Toast.show(type);
+}
+
+export function callToastLong(type) {
+  Toast.show(type,Toast.LONG);
+}

@@ -7,6 +7,7 @@ class Firebase {
             apiKey: "AIzaSyDd4vcbA7M4zgMb034Tti5h_uWvXPMOphc",
             authDomain: "simple-todo-app-c370f.firebaseapp.com",
             databaseURL: "https://simple-todo-app-c370f.firebaseio.com",
+            projectId: "simple-todo-app-c370f",
             storageBucket: "simple-todo-app-c370f.appspot.com"
         });
         
