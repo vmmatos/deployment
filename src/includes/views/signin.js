@@ -7,18 +7,14 @@ import {
 	StyleSheet, 
 	Text, 
 	View, 
-	Alert, 
 	Dimensions, 
-	TouchableHighlight, 
 	Navigator,
-	TextInput,
-	Button,
-	Animated
+	Image
 } from 'react-native';
 
-import firebase from 'firebase';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// <FontAwesome name='trophy' />
+
+import LoginForm from '../views/loginForm';
 
 import commonStyle from '../styles/common.css';
 
@@ -26,13 +22,8 @@ import commonStyle from '../styles/common.css';
 
 const width = Dimensions.get('window').width - 40;
 
-let color = {
-	currentColor: '#00ffff',
-	errorColor: '#ff0000'
-}
-
 // MAIN
-class SignIn extends Component {
+export default class SignIn extends Component {
 
 	constructor(props) {
 		super(props);
@@ -44,69 +35,22 @@ class SignIn extends Component {
 		};
 	}
 
-	_handlePress() {
-    	this.props.navigator.push({index: 1,});
-    }
-
-    _handleMailChange(evt) {
-    	alert('mail - ' + evt);
-    	if (evt === 'ola') {
-    		this.setState({color: '#ff0000'});
-    		console.log('ola--');
-    	} else {
-    		console.log('NOT ola--');
-    	}
-    }
-
 	render () {
 
   		return (
 
 			<View style={commonStyle.container}>
 
-				<View style={styles.viewForm}>
+				<View style={commonStyle.logoContainer}>
+					<Image
+						style={commonStyle.logo}
+						source={require('../imgs/logomarca-restaurante.png')} />
 
-					<TextInput
-				    	style={[styles.inputFields, {color: color.currentColor}]}
-				    	onChangeText={this._handleMailChange}
-				    	placeholder="Email"
-				    	placeholderTextColor="#666"
-				    	keyboardType="email-address"
-				    	underlineColorAndroid="transparent"
-				    />
+					<Text style={styles.title}>Onde a comida é boa!</Text>
+				</View>
 
-				    <TextInput
-				    	style={styles.inputFields}
-				    	onChangeText={(text) => this.setState({text})}
-				    	placeholder="Palavra-Chave"
-				    	placeholderTextColor="#666"
-				    	secureTextEntry={true}
-				    />
-
-					<TouchableHighlight onPress={() => {
-							// this._handlePress();
-							}
-						}
-						style={styles.primaryButton}
-						onHideUnderlay={()=>{this.setState({pressed: false})}}
-						onShowUnderlay={()=>{this.setState({pressed: true})}}>
-						<Text style={styles.primaryButtonTxt}>ENTRAR</Text>
-					</TouchableHighlight>
-
-					<View style={styles.containerMiddle}>
-						<Text style={styles.middleTxt}>ou</Text>
-					</View>
-
-					<TouchableHighlight onPress={() => {
-							this._handlePress();
-							}
-						}
-						style={styles.primaryButton}
-						onHideUnderlay={()=>{this.setState({pressed: false})}}
-						onShowUnderlay={()=>{this.setState({pressed: true})}}>
-						<Text style={styles.primaryButtonTxt}>NOVO REGISTO</Text>
-					</TouchableHighlight>
-
+				<View style={styles.formContainer}>
+					<LoginForm navigator={navigator} {...this.props} />
 				</View>
 
 			</View>
@@ -117,51 +61,13 @@ class SignIn extends Component {
 
 
 const styles = StyleSheet.create({
-	alignCenterBtns: {
-		alignItems: 'center',
-		flexDirection: 'row',
-		justifyContent: 'space-around',
-	},
-
-	primaryButton: {
-		alignItems: 'center',
-		backgroundColor: '#0dbbee',
-		borderColor: 'transparent',	
-   		borderRadius: 10,
-   		borderWidth: 1,
-   		flexDirection: 'row',
-   		height: 40,
-	    justifyContent: 'center',
-	    marginBottom: 8,
-   		width: width
-	},
-
-	primaryButtonTxt: {
-   		color: '#fff'
-	},
-
-	containerMiddle: {
-		flexDirection: 'row',
-	},
-
-	middleTxt: {
-		flex:1,
-   		fontSize: 16,
-	    marginBottom: 10,
-	    textAlign: 'center',
-	    width: 50
-	},
-
-	viewForm: {
-		marginBottom: 20,
-		width: width
-	},
-
-	inputFields: {
-		height: 50,
-		marginBottom: 8,
-		padding: 5,
-	},
+	title: {
+		color: '#fff',
+		marginTop: -25,
+		opacity: 0.6,
+		textAlign: 'center',
+		width: 130,
+	}
 });
 
 module.exports = SignIn;

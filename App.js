@@ -12,7 +12,9 @@ import {
 import firebase from 'firebase';
 
 import Firebase from './src/includes/config/firebase/firebase';
+
 import Login from './src/includes/views/login';
+import Home from './src/includes/views/home';
 
 import commonStyle from './src/includes/styles/common.css'
 
@@ -51,11 +53,17 @@ export default class App extends Component {
   }
 
   static renderScene (route, navigator) {
+
+    console.log('ESTADO - ' + route.name);
     
     switch (route.name) {
 
       case "Login":
-        return (<Login navigator={navigator} />);
+        return (<Login navigator={navigator} {...route.passProps} />);
+        break;
+
+      case "Home":
+        return (<Home navigator={navigator} {...route.passProps} />);
         break;
 
     }

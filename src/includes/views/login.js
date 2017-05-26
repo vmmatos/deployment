@@ -9,6 +9,7 @@ import {
 
 import SignIn from '../views/signin';
 import SignUp from '../views/signup';
+import Home from '../views/home';
 
 // MAIN
 class Login extends Component {
@@ -17,8 +18,10 @@ class Login extends Component {
 
 		if (route.index === 0) {
 			return (<SignIn navigator={navigator} />);
-		} else {
+		} else if (route.index === 1) {
 			return <SignUp navigator={navigator} />
+		} else {
+			return <Home navigator={navigator} />
 		}
 
 	}
@@ -27,7 +30,8 @@ class Login extends Component {
 
 		const routes = [
 			{title: 'ENTRAR', index: 0}, 
-			{title: 'REGISTAR', index: 1}, 
+			{title: 'REGISTAR', index: 1},
+			{title: 'HOME', index: 2}, 
 		];
 
 		return (
